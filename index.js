@@ -159,8 +159,8 @@ function useSymbolIterator(obj) {
   // Повертаємо масив зі значеннями
 
   let result = [];
-  for (let item of obj) {
-    result[result.length] = item;
+  for (let value of obj) {
+    result = [...result, value];
   }
   return result;
 }
@@ -187,11 +187,8 @@ let myObject = {
   // Оголошення методу Symbol.iterator для об'єкта "myObject"
   //Повертаємо this
   [Symbol.iterator]() {
-    this.current = this.currentIndex;
-    
-    return this;
+   return this;
   },
-
 
   // Оголошення методу "next" для ітерації
   // Створюємо логічний оператор який буде перевіряти чи властивість об'єкту currentIndex менша ніж довжина масиву category
@@ -200,15 +197,12 @@ let myObject = {
   // Повертаємо об'єкт з властивістю value значенням якої буде value,та прапорцем done: false
   //Якщо властивість об'єкту currentIndex більше або дорівнює довжині масиву category повертаємо об'єкт з прапорцем done: true, коли ітерація закінчена
   next() {
-    let {name} = this.category[this.currentIndex];
-    this.currentIndex++;
-       
-    console.log(name);
-    
-    return this.currentIndex <= this.category.length ? {
-      value: name,
-      done: false} : 
-     {done: true};
+    if (this.currentIndex <= this.category.length) {
+      console.log (this.currentIndex, this.category[this.currentIndex].name);
+      const value = this.category[this.currentIndex].name;
+      this.currentIndex++;
+      return {value, done: false};
+    } else {return {done: true};}
   },
 };
 
